@@ -9,6 +9,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { logout } from '../effects/user/userSlice';
 import { userAuthSelector } from '../effects/user/userSelector';
@@ -22,7 +23,7 @@ export const SingleNewsPage = () => {
   const { id } = useParams();
 
   const isLoading = useAppSelector(newsLoadingSelector);
-  const newsById = useAppSelector(getNewsById(+id || 0));
+  const newsById = useAppSelector(getNewsById(Number(id)));
   const isLogin = useAppSelector(userAuthSelector);
   const isError = useAppSelector(newsLoadingFailed);
 
@@ -45,7 +46,7 @@ export const SingleNewsPage = () => {
         <AppBar position="static">
           <Toolbar>
             <Button onClick={() => navigate('/')} color="inherit">
-              Back
+              <ArrowBackIosIcon/>
             </Button>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               News
@@ -60,18 +61,16 @@ export const SingleNewsPage = () => {
         {isLoading ? (
           <Loader />
         ) : (
-          <Card>
+          <Card sx={{marginTop: 2}}>
             {newsById?.img && (
-              <CardMedia component="img" height="360" image={newsById?.img} alt="news" />
+              <CardMedia component="img" height="auto" image={newsById?.img} alt="news" />
             )}
             <CardContent>
               <Typography gutterBottom variant={'h3'} component="div">
                 {newsById?.title}
-                If the United States pulls back, the world will become more dangerous
               </Typography>
               <Typography variant="h6" color="text.secondary">
                 {newsById?.description}
-                Other democracies must start preparing
               </Typography>
               {newsById?.text?.map((item, i) => (
                 <Typography key={i} variant="body1" color="text.secondary">
